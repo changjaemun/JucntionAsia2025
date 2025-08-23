@@ -25,6 +25,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar-nav {
     margin-left: 0;
+    display: flex;
+    align-items: center;
 }
 
 .nav-link {
@@ -216,6 +218,32 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* 시작하기 버튼 스타일 */
+.btn-start {
+    width: 350px;
+    height: 75px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: var(--ButtonColor, linear-gradient(180deg, rgba(0, 133, 239, 0.00) 0%, rgba(240, 242, 248, 0.20) 100%), #0092FD);
+    background-blend-mode: multiply, normal;
+    box-shadow: 0 2px 10px 0 rgba(156, 165, 179, 0.40);
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.9px;
+    transition: all 0.3s ease;
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px 0 rgba(156, 165, 179, 0.50);
 }
 
 /* 파일 업로드 영역 스타일 */
@@ -530,4 +558,65 @@ h1, h2, h3, h4, h5, h6 {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
+}
+
+/* 기능 카드 호버 효과 */
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+}
+
+.feature-icon {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+/* 메인 페이지 히어로 타이틀 스타일 */
+.hero-title {
+    color: #000;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+/* 히어로 서브타이틀 스타일 */
+.hero-subtitle {
+    color: #202020;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 55px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+/* CostChecker 하이라이트 스타일 */
+.costchecker-highlight {
+    color: #008EFC;
+    font-family: Pretendard;
+    font-size: 55px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+/* 히어로 설명 텍스트 스타일 */
+.hero-description {
+    color: #262626;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 160%;
 }

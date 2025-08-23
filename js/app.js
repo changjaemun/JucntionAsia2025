@@ -346,9 +346,7 @@ function generateDashboardHTML(result) {
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-light">
-                        <h5 class="mb-0">
-                            <i class="fas fa-chart-pie me-2"></i>매칭 통계
-                        </h5>
+                        <h5 class="mb-0">매칭 통계</h5>
                     </div>
                     <div class="card-body">
                         <div class="row text-center">
@@ -384,9 +382,7 @@ function generateDashboardHTML(result) {
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-light">
-                        <h5 class="mb-0">
-                            <i class="fas fa-table me-2"></i>상세 결과
-                        </h5>
+                        <h5 class="mb-0">상세 결과</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
