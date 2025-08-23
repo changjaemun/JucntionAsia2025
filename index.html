@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>건설 예산 검증 서비스</title>
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <div class="navbar-nav">
+                <a class="nav-link active" href="#" data-tab="home">홈</a>
+                <a class="nav-link" href="#" data-tab="upload">업로드</a>
+                <a class="nav-link" href="#" data-tab="dashboard">대시보드</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main id="mainContent">
+        <!-- 홈 탭 -->
+        <div id="homeTab" class="tab-content active">
+            <!-- 히어로 섹션 -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 mx-auto text-center">
+                            <h1 class="hero-title mb-4">
+                                "공사원가 예산서, 더이상 불안해하지 마세요"
+                            </h1>
+                            <h2 class="hero-subtitle mb-5">건설 예산 검증 서비스, CostGuardAI입니다.</h2>
+                            <p class="hero-description mb-4">
+                                정부고시 표준단가를 기반해서 예산 내역서를 자동으로 검증합니다.
+                            </p>
+                            <p class="hero-description mb-5">
+                                간단한 파일 업로드만으로 최신 표준단가와 비교, 검토해서 누락, 오차를 방지하세요.
+                            </p>
+                            <button class="btn btn-start" onclick="switchTab('upload')">
+                                지금 시작하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 어두운 배경 섹션 -->
+            <section class="dark-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h2 class="dark-title mb-4">
+                                작은 실수여도<br>
+                                책임은 클 수 있습니다.
+                            </h2>
+                            <p class="dark-subtitle mb-4">
+                                표준가격과 어긋나있는 단가,<br>
+                                작은 숫자의 차이로 프로젝트의 일정, 비용, 신뢰와 평판까지 무너질 수 있습니다.
+                            </p>
+                            <p class="dark-description mb-4">
+                                이 현대적인 웹 서비스는 설계 회사들이 국가 공시 단가와 비교하여 건설 예산 견적을 검증하는 데 도움을 줍니다.
+                            </p>
+                            <p class="dark-description mb-4">
+                                사용자들은 분석을 위해 엑셀 또는 PDF 형식의 견적 파일을 업로드할 수 있습니다.
+                            </p>
+                            <p class="dark-description mb-4">
+                                이 애플리케이션은 불일치, 오류를 강조하고 수정 및 검증을 위한 도구를 제공하는 포괄적인 대시보드를 제공합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 업로드 탭 -->
+        <div id="uploadTab" class="tab-content">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="text-center mb-5">
+                            <h2 class="mb-3">Excel 파일 업로드</h2>
+                            <p class="text-muted">표준공사코드 매칭을 위해 Excel 파일을 업로드해주세요.</p>
+                        </div>
+                        
+                        <!-- 파일 업로드 영역 -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-5">
+                                <div id="uploadArea" class="upload-area text-center p-5 border-2 border-dashed border-secondary rounded">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                    <h5 class="mb-3">파일을 드래그하거나 클릭하여 업로드</h5>
+                                    <p class="text-muted mb-3">Excel 파일 (.xlsx, .xls)만 지원됩니다.</p>
+                                    <button class="btn btn-outline-primary" onclick="document.getElementById('fileInput').click()">
+                                        <i class="fas fa-folder-open me-2"></i>파일 선택
+                                    </button>
+                                    <input type="file" id="fileInput" accept=".xlsx,.xls" style="display: none;">
+                                </div>
+                                
+                                <!-- 파일 정보 표시 -->
+                                <div id="fileInfo" class="mt-4" style="display: none;">
+                                    <div class="alert alert-info">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>선택된 파일:</strong> <span id="fileName"></span>
+                                                <br>
+                                                <small class="text-muted">크기: <span id="fileSize"></span></small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-danger" onclick="removeFile()">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 업로드 버튼 -->
+                                <div class="text-center mt-4">
+                                    <button id="uploadBtn" class="btn btn-primary btn-lg px-5" onclick="processFile()" style="display: none;">
+                                        <i class="fas fa-cogs me-2"></i>표준공사코드 매칭하기
+                                    </button>
+                                </div>
+                                
+                                <!-- 진행률 표시 -->
+                                <div id="progressContainer" class="mt-4" style="display: none;">
+                                    <div class="progress mb-3">
+                                        <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                                    </div>
+                                    <p id="progressText" class="text-center text-muted mb-0">처리 중...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 가이드 -->
+                        <div class="card border-0 shadow-sm mt-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>업로드 가이드
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>필수 컬럼: 품명, 규격, 단위, 재료비</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>재료비가 0원인 품목은 제외됩니다</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>파일 크기는 10MB 이하여야 합니다</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>처리 완료 후 대시보드로 자동 이동됩니다</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 대시보드 탭 -->
+        <div id="dashboardTab" class="tab-content">
+            <div class="container py-5">
+                <div id="dashboardContent">
+                    <!-- 파일 업로드 안내 -->
+                    <div id="noDataMessage" class="text-center py-5">
+                        <i class="fas fa-file-excel fa-4x text-muted mb-4"></i>
+                        <h3 class="mb-3">데이터가 없습니다</h3>
+                        <p class="text-muted mb-4">표준공사코드 매칭 결과를 확인하려면 먼저 Excel 파일을 업로드해주세요.</p>
+                        <button class="btn btn-primary btn-lg" onclick="switchTab('upload')">
+                            <i class="fas fa-upload me-2"></i>파일 업로드하기
+                        </button>
+                    </div>
+                    
+                    <!-- 결과 표시 영역 -->
+                    <div id="resultContent" style="display: none;">
+                        <!-- 요약 통계 카드 -->
+                        <div class="row mb-5">
+                            <div class="col-md-3 mb-3">
+                                <div class="card stat-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">전체 항목</h6>
+                                        <h2 class="stat-number">2000개</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card stat-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">단가오류</h6>
+                                        <h2 class="stat-number text-danger">10</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card stat-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">인식오류</h6>
+                                        <h2 class="stat-number">2</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card stat-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">수정 완료</h6>
+                                        <h2 class="stat-number text-primary">2</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 오류 보고서 -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">오류 보고서</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>상태</th>
+                                                <th>파일 품목명</th>
+                                                <th>파일 기재 규격</th>
+                                                <th>파일 범위</th>
+                                                <th>파일 기입단가</th>
+                                                <th>표준 품목명</th>
+                                                <th>표준 규격</th>
+                                                <th>표준 범위</th>
+                                                <th>표준 단가</th>
+                                                <th>코드</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="errorReportTable">
+                                            <!-- 동적으로 생성될 내용 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 전체 검증 보고서 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">전체 검증 보고서</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>상태</th>
+                                                <th>파일 품목명</th>
+                                                <th>파일 기재 규격</th>
+                                                <th>파일 범위</th>
+                                                <th>파일 기입단가</th>
+                                                <th>표준 품목명</th>
+                                                <th>표준 규격</th>
+                                                <th>표준 범위</th>
+                                                <th>표준 단가</th>
+                                                <th>코드</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fullReportTable">
+                                            <!-- 동적으로 생성될 내용 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>건설 예산 검증 서비스</h5>
+                    <p class="mb-0">AI 기반 건설 프로젝트 예산 검증 솔루션</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0">&copy; 2024 OMORI BLUE. All rights reserved.</p>
+                    <small class="text-muted">OMORI BLUE</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SheetJS 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 커스텀 스크립트 -->
+    <script src="js/app.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

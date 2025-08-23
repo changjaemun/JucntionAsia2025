@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업로드 결과 - CostGuardAI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .result-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .result-message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .file-info {
+            font-size: 1rem;
+            color: #007bff;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #e7f3ff;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+        
+        @media (max-width: 768px) {
+            .result-title {
+                font-size: 1.5rem;
+            }
+            
+            .result-container {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <div class="result-title">업로드 완료</div>
+        
+        <div class="result-message">
+            #(message)
+        </div>
+        
+        #if(fileName):
+        <div class="file-info">
+            업로드된 파일: <strong>#(fileName)</strong>
+        </div>
+        #endif
+        
+        <div class="button-group">
+            <a href="/upload" class="btn btn-primary">다른 파일 업로드</a>
+            <a href="/budget" class="btn btn-secondary">메인으로 돌아가기</a>
+            #if(fileName):
+            <button class="btn btn-success" onclick="processFile()">Solar Pro2로 처리하기</button>
+            #endif
+        </div>
+    </div>
+    
+    <script>
+        function processFile() {
+            // Solar Pro2 처리 로직 (다음 단계에서 구현)
+            alert('Solar Pro2 처리 기능은 다음 단계에서 구현됩니다.');
+        }
+    </script>
+</body>
+</html>
