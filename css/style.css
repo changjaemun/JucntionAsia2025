@@ -281,8 +281,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .table thead th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #f7f8ff 0%, #fafbff 100%);
+    color: #4C5661 100%;
     border: none;
     font-weight: 600;
 }
