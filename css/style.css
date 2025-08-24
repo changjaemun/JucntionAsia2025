@@ -373,10 +373,121 @@ h1, h2, h3, h4, h5, h6 {
 /* 테이블 스타일 */
 .table {
     font-size: 0.9rem;
+    table-layout: fixed;
+    width: 100%;
 }
 
 .table th {
     font-weight: 600;
+}
+
+/* 테이블 컬럼 너비 고정 */
+.table th:nth-child(1), .table td:nth-child(1) { /* 품목명 */
+    width: 25%;
+}
+
+.table th:nth-child(2), .table td:nth-child(2) { /* 규격 */
+    width: 20%;
+}
+
+.table th:nth-child(3), .table td:nth-child(3) { /* 단위 */
+    width: 8%;
+}
+
+.table th:nth-child(4), .table td:nth-child(4) { /* 재료비 */
+    width: 12%;
+}
+
+.table th:nth-child(5), .table td:nth-child(5) { /* 결과 */
+    width: 10%;
+}
+
+.table th:nth-child(6), .table td:nth-child(6) { /* 매칭 정보 */
+    width: 25%;
+}
+
+/* 후보목록 모달 테이블 컬럼 너비 */
+#candidatesModal .table th:nth-child(1), #candidatesModal .table td:nth-child(1) { /* 순위 */
+    width: 8%;
+}
+
+#candidatesModal .table th:nth-child(2), #candidatesModal .table td:nth-child(2) { /* 표준코드 */
+    width: 15%;
+}
+
+#candidatesModal .table th:nth-child(3), #candidatesModal .table td:nth-child(3) { /* 표준품목명 */
+    width: 25%;
+}
+
+#candidatesModal .table th:nth-child(4), #candidatesModal .table td:nth-child(4) { /* 규격 */
+    width: 20%;
+}
+
+#candidatesModal .table th:nth-child(5), #candidatesModal .table td:nth-child(5) { /* 단위 */
+    width: 8%;
+}
+
+#candidatesModal .table th:nth-child(6), #candidatesModal .table td:nth-child(6) { /* 표준단가 */
+    width: 12%;
+}
+
+#candidatesModal .table th:nth-child(7), #candidatesModal .table td:nth-child(7) { /* 점수 */
+    width: 12%;
+}
+
+/* 후보 목록 행 호버 효과 */
+#candidatesModal .table tbody tr:hover {
+    background-color: #e3f2fd !important;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+/* 단가 차이 분석 테이블 컬럼 너비 */
+.card .table th:nth-child(1), .card .table td:nth-child(1) { /* 품목명 */
+    width: 25%;
+}
+
+.card .table th:nth-child(2), .card .table td:nth-child(2) { /* 규격 */
+    width: 20%;
+}
+
+.card .table th:nth-child(3), .card .table td:nth-child(3) { /* 단위 */
+    width: 8%;
+}
+
+.card .table th:nth-child(4), .card .table td:nth-child(4) { /* 재료비 */
+    width: 12%;
+}
+
+.card .table th:nth-child(5), .card .table td:nth-child(5) { /* 표준단가 */
+    width: 12%;
+}
+
+.card .table th:nth-child(6), .card .table td:nth-child(6) { /* 차이 */
+    width: 12%;
+}
+
+.card .table th:nth-child(7), .card .table td:nth-child(7) { /* 차이율 */
+    width: 11%;
+}
+
+/* 토글 섹션 스타일 */
+.toggle-section {
+    transition: all 0.3s ease;
+}
+
+.toggle-section:hover {
+    background-color: #f8f9fa;
+}
+
+.toggle-icon {
+    transition: all 0.3s ease;
+    font-weight: bold;
+    color: #666;
+    font-size: 14px;
+}
+
+.table th {
     color: #495057;
     border-bottom: 2px solid #dee2e6;
     padding: 1rem 0.75rem;

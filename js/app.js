@@ -381,74 +381,189 @@ function generateDashboardHTML(result) {
         <div class="row">
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">상세 결과</h5>
+                                                <div class="card-header bg-light">
+                                <h5 class="mb-0" style="cursor: pointer;" onclick="toggleDetailedResults()">
+                                    상세 결과
+                                    <span class="toggle-icon ms-2" id="detailed-results-icon">▼</span>
+                                </h5>
+                            </div>
+                    <div class="card-body" id="detailed-results-content">
+    `;
+    
+    // 결과별로 데이터 분류
+    const categorizedData = {
+        '없음': data.filter(item => item.decision === '없음'),
+        '모호': data.filter(item => item.decision === '모호'),
+        '확정': data.filter(item => item.decision === '확정')
+    };
+    
+    // 순서대로 섹션 생성 (없음, 모호, 확정)
+    const order = ['없음', '모호', '확정'];
+    
+    order.forEach(decision => {
+        const items = categorizedData[decision];
+        if (items.length > 0) {
+            const decisionClass = {
+                '확정': 'success',
+                '모호': 'warning',
+                '없음': 'danger'
+            }[decision];
+            
+            html += `
+                        <div class="mb-4">
+                            <h6 class="text-${decisionClass} mb-3">
+                                <span class="badge bg-${decisionClass} me-2">${items.length}개</span>
+                                ${decision} 항목
+                            </h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>품목명</th>
+                                            <th>규격</th>
+                                            <th>단위</th>
+                                            <th>재료비</th>
+                                            <th>결과</th>
+                                            <th>매칭 정보</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+            `;
+            
+            items.forEach((item, index) => {
+                html += `
+                    <tr>
+                        <td><strong>${item.input_item.name}</strong></td>
+                        <td>${item.input_item.spec}</td>
+                        <td>${item.input_item.unit}</td>
+                        <td>${item.input_item.ext_price.toLocaleString()}원</td>
+                        <td>
+                            <span class="badge bg-${decisionClass}">${item.decision}</span>
+                        </td>
+                        <td>
+                `;
+                
+                if (item.decision === '확정' && item.match) {
+                    html += `
+                        <small class="text-success">
+                            <strong>${item.match.std_name}</strong><br>
+                            ${item.match.std_code} | ${item.match.std_price.toLocaleString()}원
+                        </small>
+                    `;
+                } else if (item.decision === '모호' && item.candidates) {
+                    // 전체 데이터에서 해당 아이템의 인덱스 찾기
+                    const globalIndex = data.findIndex(d => 
+                        d.input_item.name === item.input_item.name && 
+                        d.input_item.spec === item.input_item.spec
+                    );
+                    html += `
+                        <small class="text-warning">
+                            ${item.candidates.length}개 후보<br>
+                            <button class="btn btn-sm btn-outline-warning" onclick="showCandidates(${globalIndex})">
+                                후보 보기
+                            </button>
+                        </small>
+                    `;
+                } else {
+                    html += `<small class="text-muted">${item.note || '매칭 없음'}</small>`;
+                }
+                
+                html += `
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+            `;
+        }
+    });
+    
+    html += `
                     </div>
-                    <div class="card-body p-0">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 단가 차이 분석 카드 -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">단가 차이 분석 (10% 이상)</h5>
+                    </div>
+                    <div class="card-body">
+    `;
+    
+    // 재료비와 표준단가 차이가 10% 이상인 항목들 필터링
+    const priceDifferenceItems = data.filter(item => {
+        if (item.decision === '확정' && item.match && item.input_item.ext_price > 0 && item.match.std_price > 0) {
+            const difference = Math.abs(item.input_item.ext_price - item.match.std_price);
+            const percentage = (difference / item.input_item.ext_price) * 100;
+            return percentage >= 10;
+        }
+        return false;
+    });
+    
+    if (priceDifferenceItems.length > 0) {
+        html += `
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover">
                                 <thead class="table-light">
                                     <tr>
                                         <th>품목명</th>
                                         <th>규격</th>
                                         <th>단위</th>
                                         <th>재료비</th>
-                                        <th>결과</th>
-                                        <th>매칭 정보</th>
+                                        <th>표준단가</th>
+                                        <th>차이</th>
+                                        <th>차이율</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-    `;
-    
-    data.forEach((item, index) => {
-        const decisionClass = {
-            '확정': 'success',
-            '모호': 'warning',
-            '없음': 'danger'
-        }[item.decision] || 'secondary';
-        
-        html += `
-            <tr>
-                <td><strong>${item.input_item.name}</strong></td>
-                <td>${item.input_item.spec}</td>
-                <td>${item.input_item.unit}</td>
-                <td>${item.input_item.ext_price.toLocaleString()}원</td>
-                <td>
-                    <span class="badge bg-${decisionClass}">${item.decision}</span>
-                </td>
-                <td>
         `;
         
-        if (item.decision === '확정' && item.match) {
+        priceDifferenceItems.forEach(item => {
+            const difference = item.input_item.ext_price - item.match.std_price;
+            const percentage = Math.abs((difference / item.input_item.ext_price) * 100);
+            const differenceClass = difference > 0 ? 'text-danger' : 'text-success';
+            const differenceText = difference > 0 ? '높음' : '낮음';
+            
             html += `
-                <small class="text-success">
-                    <strong>${item.match.std_name}</strong><br>
-                    ${item.match.std_code} | ${item.match.std_price.toLocaleString()}원
-                </small>
+                <tr>
+                    <td><strong>${item.input_item.name}</strong></td>
+                    <td>${item.input_item.spec}</td>
+                    <td>${item.input_item.unit}</td>
+                    <td>${item.input_item.ext_price.toLocaleString()}원</td>
+                    <td>${item.match.std_price.toLocaleString()}원</td>
+                    <td class="${differenceClass}">
+                        ${Math.abs(difference).toLocaleString()}원 (${differenceText})
+                    </td>
+                    <td class="${differenceClass}">
+                        <strong>${percentage.toFixed(1)}%</strong>
+                    </td>
+                </tr>
             `;
-        } else if (item.decision === '모호' && item.candidates) {
-            html += `
-                <small class="text-warning">
-                    ${item.candidates.length}개 후보<br>
-                    <button class="btn btn-sm btn-outline-warning" onclick="showCandidates(${index})">
-                        후보 보기
-                    </button>
-                </small>
-            `;
-        } else {
-            html += `<small class="text-muted">${item.note || '매칭 없음'}</small>`;
-        }
+        });
         
         html += `
-                </td>
-            </tr>
-        `;
-    });
-    
-    html += `
                                 </tbody>
                             </table>
                         </div>
+        `;
+    } else {
+        html += `
+                        <div class="text-center py-4">
+                            <p class="text-muted mb-0">재료비와 표준단가 차이가 10% 이상인 항목이 없습니다.</p>
+                        </div>
+        `;
+    }
+    
+    html += `
                     </div>
                 </div>
             </div>
@@ -542,7 +657,7 @@ function showCandidates(index) {
         
         item.candidates.forEach((candidate, idx) => {
             modalHtml += `
-                <tr>
+                <tr style="cursor: pointer;" onclick="selectCandidate(${index}, ${idx})">
                     <td>${idx + 1}</td>
                     <td>${candidate.std_code}</td>
                     <td>${candidate.std_name}</td>
@@ -579,5 +694,62 @@ function showCandidates(index) {
         
     } catch (e) {
         console.error('후보 목록 표시 오류:', e);
+    }
+}
+
+// 후보 선택 및 매칭 확정
+function selectCandidate(itemIndex, candidateIndex) {
+    const apiResult = localStorage.getItem('apiResult');
+    if (!apiResult) return;
+    
+    try {
+        const result = JSON.parse(apiResult);
+        const item = result.data[itemIndex];
+        const selectedCandidate = item.candidates[candidateIndex];
+        
+        // 선택한 후보로 매칭 확정
+        item.decision = '확정';
+        item.match = {
+            std_code: selectedCandidate.std_code,
+            std_name: selectedCandidate.std_name,
+            std_spec: selectedCandidate.std_spec,
+            std_price: selectedCandidate.std_price,
+            unit: selectedCandidate.unit,
+            match_score: selectedCandidate.match_score
+        };
+        item.candidates = null; // 후보 목록 제거
+        
+        // localStorage 업데이트
+        localStorage.setItem('apiResult', JSON.stringify(result));
+        
+        // 모달 닫기
+        const modal = bootstrap.Modal.getInstance(document.getElementById('candidatesModal'));
+        if (modal) {
+            modal.hide();
+        }
+        
+        // 대시보드 새로고침
+        showDashboardResults(result);
+        
+        // 성공 메시지 표시
+        alert(`매칭이 확정되었습니다!\n선택된 항목: ${selectedCandidate.std_name}`);
+        
+    } catch (e) {
+        console.error('후보 선택 오류:', e);
+        alert('후보 선택 중 오류가 발생했습니다.');
+    }
+}
+
+// 상세 결과 토글 함수
+function toggleDetailedResults() {
+    const content = document.getElementById('detailed-results-content');
+    const icon = document.getElementById('detailed-results-icon');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.textContent = '▼';
+    } else {
+        content.style.display = 'none';
+        icon.textContent = '▶';
     }
 }
