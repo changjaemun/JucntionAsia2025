@@ -57,7 +57,7 @@ python3 -m http.server 8000
 
 ### 4. 브라우저에서 접속
 ```
-http://localhost:8000
+http://localhost:8000/html/
 ```
 
 ## 사용 방법
@@ -83,7 +83,8 @@ http://localhost:8000
 
 ```
 Junction/
-├── index.html              # 메인 HTML 파일
+├── html/
+│   └── index.html          # 메인 HTML 파일
 ├── css/
 │   ├── style.css           # 메인 스타일시트
 │   ├── logo.png            # 로고 이미지
@@ -97,9 +98,17 @@ Junction/
 │   ├── app.js              # 메인 애플리케이션 로직
 │   ├── upload.js           # 파일 업로드 처리
 │   └── dashboard.js        # 대시보드 관련 기능
-├── estimate.xlsx           # 샘플 예산서 파일
-├── standard.xlsx           # 표준공사코드 데이터
-└── README.md               # 프로젝트 설명서
+├── Data/
+│   └── standard.xlsx       # 조달청 표준공사코드 데이터
+├── Samples/
+│   ├── estimate_synthetic_1.xlsx  # 샘플 예산서 파일 1
+│   ├── estimate_synthetic_2.xlsx  # 샘플 예산서 파일 2
+│   ├── estimate_synthetic_3.xlsx  # 샘플 예산서 파일 3
+│   ├── estimate_synthetic_4.xlsx  # 샘플 예산서 파일 4
+│   └── estimate_synthetic_5.xlsx  # 샘플 예산서 파일 5
+├── README.md               # 프로젝트 설명서
+├── 실행가이드.md           # 심사위원용 실행 가이드
+└── .gitignore              # Git 무시 파일 목록
 ```
 
 ## API 설정
